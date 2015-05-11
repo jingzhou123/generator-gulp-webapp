@@ -1,8 +1,9 @@
 /*global describe, beforeEach, it */
 'use strict';
-var path = require('path');
+var fs      = require('fs');
+var path    = require('path');
 var helpers = require('yeoman-generator').test;
-var assert = require('yeoman-assert');
+var assert  = require('yeoman-assert');
 
 describe('Gulp webapp generator test', function () {
   beforeEach(function (done) {
@@ -46,6 +47,22 @@ describe('Gulp webapp generator test', function () {
 
     this.webapp.run(function () {
       assert.file(expected);
+      done();
+    });
+  });
+
+  it('should not contain build:js in index.html', function(done) {
+    helpers.mockPrompt(this.webapp, {
+      features: ['includeBootstrap', 'includeModernizr'],
+      stylePreprocessor: 'less'
+    });
+
+    this.webapp.run(function() {
+      var indexHtml = fs.readFileSync('app/index.html', 'utf8');
+      var regexBuildJs = new RegExp('build:\s*js');
+      assert.ok(
+        !regexBuildJs.test(indexHtml),
+        'index.html contains the wiredep task for build js');
       done();
     });
   });

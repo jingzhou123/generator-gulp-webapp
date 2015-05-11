@@ -162,6 +162,7 @@ module.exports = yeoman.generators.Base.extend({
       this.indexFile = this.src.read('index.html');
       this.indexFile = this.engine(this.indexFile, this);
 
+      /*
       // wire Bootstrap plugins
       if (this.includeBootstrap) {
         var bs = '/bower_components/';
@@ -171,7 +172,6 @@ module.exports = yeoman.generators.Base.extend({
         } else {
           bs += 'bootstrap/js/';
         }
-
         this.indexFile = this.appendScripts(this.indexFile, 'scripts/plugins.js', [
           bs + 'affix.js',
           bs + 'alert.js',
@@ -194,6 +194,7 @@ module.exports = yeoman.generators.Base.extend({
         optimizedPath: 'scripts/main.js',
         sourceFileList: ['scripts/main.js']
       });
+      */
 
       this.write('app/index.html', this.indexFile);
     },
