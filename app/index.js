@@ -44,14 +44,24 @@ module.exports = yeoman.generators.Base.extend({
     }
 
     var prompts = [{
+      type: 'list',
+      name: 'stylePreprocessor',
+      message: 'which style preprocessor would you want?',
+      choices: [{
+        name: 'Sass',
+        value: 'sass'
+      }, {
+        name: 'Less',
+        value: 'less'
+
+      }, {
+        name: 'None',
+        value: 'none'}]
+      }, {
       type: 'checkbox',
       name: 'features',
       message: 'What more would you like?',
       choices: [{
-        name: 'Sass',
-        value: 'includeSass',
-        checked: true
-      }, {
         name: 'Bootstrap',
         value: 'includeBootstrap',
         checked: true
@@ -71,9 +81,14 @@ module.exports = yeoman.generators.Base.extend({
 
       // manually deal with the response, get back and store the results.
       // we change a bit this way of doing to automatically do this in the self.prompt() method.
-      this.includeSass = hasFeature('includeSass');
+      
+      this.log(answers);
+      this.includeSass = answers.stylePreprocessor === 'sass';
+      this.includeLess = answers.stylePreprocessor === 'less';
+
       this.includeBootstrap = hasFeature('includeBootstrap');
       this.includeModernizr = hasFeature('includeModernizr');
+
 
       done();
     }.bind(this));
@@ -134,6 +149,8 @@ module.exports = yeoman.generators.Base.extend({
 
       if (this.includeSass) {
         css += '.scss';
+      } else if (this.includeLess){
+        css += '.less';
       } else {
         css += '.css';
       }

@@ -24,13 +24,14 @@ describe('Gulp webapp generator: sass feature', function () {
     }.bind(this));
   });
 
-  var assertFileExists = function (app, fileExt, features, done) {
+  var assertFileExists = function (app, fileExt, features, done, stylePreprocessor) {
     var expected = [
       'app/styles/main.' + fileExt
     ];
 
     helpers.mockPrompt(app, {
-      features: features
+      features: features,
+      stylePreprocessor: stylePreprocessor
     });
 
     app.run(function () {
@@ -40,10 +41,14 @@ describe('Gulp webapp generator: sass feature', function () {
   };
 
   it('should create scss file', function (done) {
-    assertFileExists(this.webapp, 'scss', ['includeSass'], done);
+    assertFileExists(this.webapp, 'scss', [], done, 'sass');
+  });
+
+  it('should create scss file', function (done) {
+    assertFileExists(this.webapp, 'less', [], done, 'less');
   });
 
   it('should create css file', function (done) {
-    assertFileExists(this.webapp, 'css', [], done);
+    assertFileExists(this.webapp, 'css', [], done, 'none');
   });
 });
