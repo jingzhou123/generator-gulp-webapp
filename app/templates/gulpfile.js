@@ -18,7 +18,7 @@ gulp.task('styles', function () {<% if (includeSass) { %>
     .pipe($.sourcemaps.init())
     .pipe($.less({
       paths: ['.']
-    })).on('error', $.less.logError)<% } else { %>
+    }))<% } else { %>
   return gulp.src('app/styles/*.css')
     .pipe($.sourcemaps.init())<% } %>
     .pipe($.postcss([
