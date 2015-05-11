@@ -26,14 +26,23 @@ describe('Gulp Webapp generator: tasks', function () {
     }.bind(this));
   });
 
-  var assertTaskExists = function (generator, taskName, features, done) {
+  var assertTaskExists = function (generator, taskName, features, done, stylePreprocessor) {
     helpers.mockPrompt(generator, {
-      features: features
+      features          : features,
+      stylePreprocessor : stylePreprocessor
     });
 
     generator.run(function () {
-      var gulpFile = fs.readFileSync('gulpfile.js', 'utf8');
+      var gulpFile  = fs.readFileSync('gulpfile.js', 'utf8');
       var regexGulp = new RegExp('gulp.task\\(\'' + taskName + '\'');
+
+      // whether include less or scss or css;
+      var regexPreprocessor = 
+        new RegExp(stylePreprocessor === 'less' ?
+          '\$\.less' :
+          (stylePreprocessor === 'sass' ?
+             '\$\.sass' :
+             'gulp\.src\(\'app\/styles\/\*\.css\'\)'));
 
       assert.ok(
         regexGulp.test(gulpFile),
@@ -48,7 +57,16 @@ describe('Gulp Webapp generator: tasks', function () {
   });
 
   it('should contain styles task with Sass included', function (done) {
-    assertTaskExists(this.webapp, 'styles', ['includeSass'], done);
+    assertTaskExists(this.webapp, 'styles', [], done, 'sass');
+  });
+
+  it('should contain styles task with Less included', function (done) {
+    assertTaskExists(this.webapp, 'styles', [], done, 'less');
+  });
+
+
+  it('should contain styles task with css included', function (done) {
+    assertTaskExists(this.webapp, 'styles', [], done, 'none');
   });
 
   it('should contain jshint task', function (done) {

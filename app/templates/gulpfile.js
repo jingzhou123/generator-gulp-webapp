@@ -13,7 +13,12 @@ gulp.task('styles', function () {<% if (includeSass) { %>
       outputStyle: 'expanded',
       precision: 10,
       includePaths: ['.']
-    }).on('error', $.sass.logError))<% } else { %>
+    }).on('error', $.sass.logError))<% } else if (stylePreprocessor = 'less'){ %>
+    .pipe($.sourcemaps.init())
+    .pipe($.less({
+      paths: ['.']
+    })).on('error', $.less.logError)
+    <% } else { %>
   return gulp.src('app/styles/*.css')
     .pipe($.sourcemaps.init())<% } %>
     .pipe($.postcss([
