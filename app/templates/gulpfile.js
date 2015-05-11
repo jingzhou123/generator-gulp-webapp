@@ -14,11 +14,11 @@ gulp.task('styles', function () {<% if (includeSass) { %>
       precision: 10,
       includePaths: ['.']
     }).on('error', $.sass.logError))<% } else if (stylePreprocessor = 'less'){ %>
+  return gulp.src('app/styles/*.less')
     .pipe($.sourcemaps.init())
     .pipe($.less({
       paths: ['.']
-    })).on('error', $.less.logError)
-    <% } else { %>
+    })).on('error', $.less.logError)<% } else { %>
   return gulp.src('app/styles/*.css')
     .pipe($.sourcemaps.init())<% } %>
     .pipe($.postcss([
